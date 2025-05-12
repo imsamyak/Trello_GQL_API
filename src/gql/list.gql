@@ -1,0 +1,88 @@
+"""
+Represents a list in a board with associated tasks.
+"""
+type List {
+  """
+  The unique identifier for the list.
+  """
+  id: ID!
+
+  """
+  The title of the list.
+  """
+  title: String!
+
+  """
+  A detailed description of the list.
+  """
+  description: String!
+
+  """
+  The tasks associated with this list.
+  """
+  tasks: [Task!]!
+
+  """
+  The board that this list belongs to.
+  """
+  board: Board!
+}
+
+"""
+Input type for updating a list.
+"""
+input UpdateListInput {
+  """
+  The updated title of the list (optional).
+  """
+  title: String
+
+  """
+  The updated description of the list (optional).
+  """
+  description: String
+}
+
+"""
+Input type for adding a new task to a list.
+"""
+input AddTaskInput {
+  """
+  The title of the task to be added.
+  """
+  title: String!
+
+  """
+  A description of the task to be added.
+  """
+  description: String
+
+  """
+  The ID of the user to be assigned to the task.
+  """
+  assignee: ID!
+}
+
+extend type Query {
+  """
+  Retrieves a list by its unique ID.
+  """
+  getListById(id: ID!): List
+}
+
+extend type Mutation {
+  """
+  Updates an existing list with the provided input data.
+  """
+  updateList(id: ID!, listData: UpdateListInput!): List
+  
+  """
+  Deletes a list by its unique ID.
+  """
+  deleteList(id: ID!): List
+  
+  """
+  Adds a new task to a list.
+  """
+  addTask(id: ID!, taskData: AddTaskInput!): Task!
+}

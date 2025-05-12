@@ -1,0 +1,19 @@
+"""
+Represents a query operation.
+"""
+type Query {
+  """
+  A dummy query that returns a string.
+  """
+  dummy: String
+}
+
+"""
+Represents a mutation operation.
+"""
+type Mutation {
+  """
+  A dummy mutation that returns a string.
+  """
+  dummy: String
+}

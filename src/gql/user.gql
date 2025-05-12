@@ -1,0 +1,133 @@
+"""
+Represents a user board with the associated role of the user on the board.
+"""
+type UserBoard {
+	"""
+	The board that the user is associated with.
+	"""
+	board: Board!
+
+	"""
+	The role of the user on the board (e.g., Admin, Member).
+	"""
+	role: UserRole!
+}
+
+"""
+Represents a user in the system (like a Trello user).
+"""
+type User {
+	"""
+	The unique ID of the user.
+	"""
+	id: ID!
+
+	"""
+	The first name of the user.
+	"""
+	fName: String!
+
+	"""
+	The last name of the user.
+	"""
+	lName: String!
+
+	"""
+	The email address of the user.
+	"""
+	email: String!
+
+	"""
+	The password of the user (should be hashed).
+	"""
+	password: String!
+
+	"""
+	A list of boards that the user is associated with, along with their roles.
+	"""
+	boards: [UserBoard!]!
+
+	"""
+	Whether the user is active in the system or not.
+	"""
+	isActive: Boolean!
+
+	"""
+	Whether the user has verified their email address.
+	"""
+	isVerified: Boolean!
+}
+
+"""
+Input type for creating a new user.
+"""
+input CreateUserInput {
+	"""
+	The first name of the user.
+	"""
+	fName: String!
+
+	"""
+	The last name of the user (optional).
+	"""
+	lName: String
+
+	"""
+	The email address of the user.
+	"""
+	email: String!
+
+	"""
+	The password of the user (should be hashed).
+	"""
+	password: String!
+}
+
+"""
+Input type for updating an existing user's information.
+"""
+input UpdateUserInput {
+	"""
+	The updated first name of the user (optional).
+	"""
+	fName: String
+
+	"""
+	The updated last name of the user (optional).
+	"""
+	lName: String
+
+	"""
+	The updated password of the user (optional).
+	"""
+	password: String
+}
+
+extend type Query {
+	"""
+	Query to get a user by its unique id.
+	"""
+	getUserById(id: ID!): User
+
+	"""
+	Query to get a user by their email address.
+	"""
+	getUserByEmail(email: String!): User
+}
+
+extend type Mutation {
+	"""
+	Mutation to create a new user with the provided input data.
+	"""
+	createUser(userData: CreateUserInput!): User
+
+	"""
+	Mutation to update an existing user.
+	"""
+	updateUser(id: ID, email: String, userData: UpdateUserInput!): User
+
+	"""
+	Mutation to delete a user by their unique ID.
+	"""
+	deleteUser(id: ID!): User
+}

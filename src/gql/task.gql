@@ -1,0 +1,58 @@
+"""
+Represents a task with a title and description.
+"""
+type Task {
+  """
+  The unique identifier for the task.
+  """
+  id: ID!
+
+  """
+  The title of the task.
+  """
+  title: String!
+
+  """
+  A detailed description of the task.
+  """
+  description: String!
+}
+
+"""
+Input type for updating a task.
+"""
+input UpdateTaskInput {
+  """
+  The updated title of the task (optional).
+  """
+  title: String
+
+  """
+  The updated description of the task (optional).
+  """
+  description: String
+
+  """
+  The ID of the user assigned to the task (optional).
+  """
+  assignee: ID
+}
+
+extend type Query {
+  """
+  Retrieves a task by its unique ID.
+  """
+  getTaskById(id: ID!): Task
+}
+
+extend type Mutation {
+  """
+  Updates an existing task with the provided input data.
+  """
+  updateTask(id: ID!, taskData: UpdateTaskInput!): Task
+  
+  """
+  Deletes a task by its unique ID.
+  """
+  deleteTask(id: ID!): Task
+}

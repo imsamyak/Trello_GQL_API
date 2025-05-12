@@ -1,0 +1,163 @@
+"""
+Represents a user's role in a board.
+"""
+enum UserRole {
+  """
+  A viewer has read-only access to the board.
+  """
+  viewer
+
+  """
+  An editor can edit the board.
+  """
+  editor
+
+  """
+  An admin has full control over the board, including managing users.
+  """
+  admin
+}
+
+"""
+Represents a user assigned to a board with a specific role.
+"""
+type BoardUser {
+  """
+  The user associated with this board.
+  """
+  user: User!
+
+  """
+  The role of the user on this board.
+  """
+  role: UserRole!
+}
+
+"""
+Represents a board with lists, tasks, and users.
+"""
+type Board {
+  """
+  The unique identifier for the board.
+  """
+  id: ID!
+
+  """
+  The title of the board.
+  """
+  title: String!
+
+  """
+  A detailed description of the board.
+  """
+  description: String!
+
+  """
+  The lists contained within the board.
+  """
+  lists: [List!]!
+
+  """
+  The users assigned to the board and their respective roles.
+  """
+  users: [BoardUser!]!
+}
+
+"""
+Input type for creating a new board.
+"""
+input CreateBoardInput {
+  """
+  The title of the board.
+  """
+  title: String!
+
+  """
+  A description of the board (optional).
+  """
+  description: String
+}
+
+"""
+Input type for updating an existing board.
+"""
+input UpdateBoardInput {
+  """
+  The unique identifier for the board.
+  """
+  id: ID!
+
+  """
+  The updated title of the board (optional).
+  """
+  title: String
+
+  """
+  The updated description of the board (optional).
+  """
+  description: String
+}
+
+"""
+Input type for adding a new list to a board.
+"""
+input AddListInput {
+  """
+  The title of the list.
+  """
+  title: String!
+
+  """
+  A description of the list (optional).
+  """
+  description: String
+}
+
+"""
+Input type for updating board access for a user.
+"""
+input UpdateBoardAccessInput {
+  """
+  The ID of the user whose access needs to be updated.
+  """
+  user: ID!
+
+  """
+  The role to assign to the user on the board.
+  """
+  role: UserRole!
+}
+
+extend type Query {
+  """
+  Retrieves a board by its unique ID.
+  """
+  getBoardById(id: ID!): Board
+}
+
+extend type Mutation {
+  """
+  Creates a new board with the provided data.
+  """
+  createBoard(boardData: CreateBoardInput!): Board
+
+  """
+  Updates an existing board with the provided data.
+  """
+  updateBoard(boardData: UpdateBoardInput!): Board
+
+  """
+  Deletes a board by its unique ID.
+  """
+  deleteBoard(id: ID!): Board
+
+  """
+  Adds a new list to the specified board.
+  """
+  addList(id: ID!, listData: AddListInput!): List
+
+  """
+  Updates the access roles of users on the board.
+  """
+  updateBoardAccess(boardId: ID!, access: [UpdateBoardAccessInput!]!): Board
+}
